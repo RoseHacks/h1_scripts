@@ -1,5 +1,5 @@
 ## HackerOne Scripts
-Automation scripts for pulling down and conducting recon on my private H1 programs using Project Discovery tools. Ran once a week to send changes to Discord server. 
+Automation scripts for pulling down and conducting recon on my private H1 programs using Project Discovery tools. Ran once a week and sends changes to Discord server. 
 
 * Just setup a cron job to run whenever:
   
