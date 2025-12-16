@@ -1,5 +1,5 @@
 ## HackerOne Scripts
-Automation scripts for pulling down and conducting recon on my private H1 programs using Project Discovery tools. Ran once a week and sends changes to Discord server. 
+Automation scripts for pulling down my private H1 program scopes and conducting weekly recon and scanning using Project Discovery tools. Ran once a week and sends changes to Discord server. 
 
 ```
 ubuntu@dev$: ./master_run.sh
