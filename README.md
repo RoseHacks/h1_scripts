@@ -25,3 +25,4 @@ Monday @ 8:15 AM — run recon:
 ### Resources
 * [HackerOne API](https://api.hackerone.com/)
 * [Project Discovery GitHub](https://github.com/projectdiscovery)
+* [Discord Webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
