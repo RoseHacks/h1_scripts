@@ -16,7 +16,7 @@ echo "[1] Running: pull_private_scope.py"
 python3 pull_private_scope.py
 
 echo "[2] Running: private_scope_recon.py"
-python3 private_scope_recon.sh
+bash private_scope_recon.sh
 
 echo "[3] Running: weekly_nuclei_all.sh"
 bash weekly_nuclei_all.sh
