@@ -1,11 +1,15 @@
 ## HackerOne Scripts
 Automation scripts for pulling down and conducting recon on my private H1 programs using Project Discovery tools. Ran once a week and sends changes to Discord server. 
 
+```
+ubuntu@dev$: ./master_run.sh
+
+```
 * Just setup a cron job to run whenever:
   
 ```
 Monday @ 8:15 AM — run recon:
-15 8 * * 1 /usr/bin/python3 /path/to/scope_recon.py >> /var/log/scope_recon.log 2>&1
+15 8 * * 1 /usr/bin/bash /path/to/master_run.sh >> /var/log/scope_recon.log 2>&1
 ```
 
 ### Notes
