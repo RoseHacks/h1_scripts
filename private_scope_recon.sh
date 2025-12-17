@@ -65,7 +65,8 @@ echo "[✓] Created nuclei input from live httpx results: ${LIVE_COUNT} targets"
 HIGHLIGHTS=$(grep -E '\[(200|401|403|500)\]' "$HTTPX_OUTPUT" | head -n 10 || true)
 
 if [[ -n "$HIGHLIGHTS" ]]; then
-  payload=$(jq -Rn --arg msg "$HIGHLIGHTS" '{content: "🌐 **Interesting Live Hosts Found (httpx)**\n```\n" + $msg + "\n```"}')
+  MESSAGE="🌐 **Interesting Live Hosts Found (httpx)**\n\`\`\`\n$HIGHLIGHTS\n\`\`\`"
+  payload=$(jq -Rn --arg msg "$MESSAGE" '{content: $msg}')
   curl -s -X POST -H "Content-Type: application/json" -d "$payload" "$DISCORD_WEBHOOK" >/dev/null
   echo "[✓] Sent httpx highlights to Discord."
 else
