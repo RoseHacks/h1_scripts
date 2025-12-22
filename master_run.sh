@@ -22,6 +22,9 @@ bash private_scope_recon.sh
 echo "[3] Running: Scanning script"
 bash private_scope_scans.sh
 
+# Start flask server to easily view and filter through interesting results --------->
+# ------
+
 echo "[4] Running: Full scope scans"
 bash weekly_nuclei_all.sh
 
