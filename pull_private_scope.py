@@ -1,4 +1,4 @@
-import requests
+import requests as req
 import os
 from datetime import datetime
 
@@ -6,20 +6,19 @@ username = "<username>"
 api_token = "<token>"
 discord_webhook = "<link>"
 
-# Output dir
 output_dir = "h1_scope_logs"
 os.makedirs(output_dir, exist_ok=True)
 
-# Timestamp for file naming
+# Timestamp for file name schema
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-# File paths (timestamped)
+# File paths (timestamped of course)
 private_programs_file = os.path.join(output_dir, f"private_programs_{timestamp}.txt")
 scope_file = os.path.join(output_dir, f"scope_{timestamp}.txt")
 wildcard_file = os.path.join(output_dir, f"scope_wildcards_{timestamp}.txt")
 new_domains_file = os.path.join(output_dir, f"new_domains_found_{timestamp}.txt")
 
-# Path to cumulative domain store
+# Path to cumulative domain store. The idea is that We have a running list of all domains and add the new ones as they are found
 all_domains_master_file = os.path.join(output_dir, "all_domains_seen.txt")
 
 private_handles = set()
@@ -31,7 +30,7 @@ page = 1
 
 while url:
     print(f"[*] Scraping program list page: {page}")
-    res = requests.get(url, auth=(username, api_token))
+    res = req.get(url, auth=(username, api_token))
     if res.status_code != 200:
         print(f"[!] Error fetching programs: {res.status_code}")
         break
@@ -53,12 +52,12 @@ with open(private_programs_file, "w") as f:
     for handle in sorted(private_handles):
         f.write(handle + "\n")
 
-# Fetch Scope
+# Grab the scope from our private programs
 
 for handle in sorted(private_handles):
     print(f"[*] Fetching scope for: {handle}")
     scope_url = f"https://api.hackerone.com/v1/hackers/programs/{handle}/structured_scopes"
-    res = requests.get(scope_url, auth=(username, api_token))
+    res = req.get(scope_url, auth=(username, api_token))
 
     if res.status_code != 200:
         print(f"[!] Failed to get scope for {handle}: {res.status_code}")
@@ -77,7 +76,7 @@ for handle in sorted(private_handles):
             if asset.startswith("*."):
                 wildcard_domains.add(asset)
 
-# Save scope files
+# "W"rite our scope to files 
 with open(scope_file, "w") as f:
     for domain in sorted(all_domains):
         f.write(domain + "\n")
@@ -90,7 +89,7 @@ print(f"[✓] Saved scope files for {len(all_domains)} domains.")
 
 # Detect New Domains
 
-# Load previous domains if file exists
+# Load previous domains IF the file exists
 old_domains = set()
 if os.path.exists(all_domains_master_file):
     with open(all_domains_master_file, "r") as f:
@@ -105,17 +104,17 @@ if new_domains:
         for domain in new_domains:
             f.write(domain + "\n")
 
-    # Update master domain store
+    # Update master domain store == running list
     with open(all_domains_master_file, "a") as f:
         for domain in new_domains:
             f.write(domain + "\n")
 
-    # === Send Discord Notification ===
+    # Send my Discord notification
     discord_payload = {
         "content": f"📡 **New HackerOne domains discovered** ({len(new_domains)}):\n" +
                    "```\n" + "\n".join(new_domains[:20]) + "\n```"
     }
-    r = requests.post(discord_webhook, json=discord_payload)
+    r = req.post(discord_webhook, json=discord_payload)
 
     if r.status_code == 204:
         print("[✓] Discord notification sent.")
